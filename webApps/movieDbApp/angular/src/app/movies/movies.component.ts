@@ -16,6 +16,7 @@ export class MoviesComponent implements OnInit {
   public movies: any;
   public afterSearch: any;
   public beforeSearch: any;
+  public selectedMovie: boolean;
 
   public constructor(private router: Router, private http: HttpClient, private location: Location) {
       this.movies = [];
@@ -46,5 +47,11 @@ export class MoviesComponent implements OnInit {
 
   public create() {
     this.router.navigate(["create"]);
+  }
+  public navigateToDetails() {
+    this.router.navigate(["movie-details"]);
+  }
+  public onSelect(movie) {
+    movie.selectedMovie = true;
   }
 }

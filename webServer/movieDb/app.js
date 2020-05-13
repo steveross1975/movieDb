@@ -69,6 +69,8 @@ app.post("/movies", function(req, res) {
             console.log("L'errore trovato è: " + err);
         } else {
             movieFromTmdb = resp.results;
+            req.body.idFromTmdb = movieFromTmdb[0].id;
+            req.body.movieTitle = movieFromTmdb[0].title; 
             req.body.originalTitle = movieFromTmdb[0].original_title;
             req.body.overview = movieFromTmdb[0].overview;
             req.body.url2poster = "https://image.tmdb.org/t/p/w500" + movieFromTmdb[0].poster_path;
@@ -78,29 +80,35 @@ app.post("/movies", function(req, res) {
                     console.log("L'errore trovato è: " + err);
                 } else {
                     req.body.movieGenre = resp;
-                    console.log(req.body);
+                    //console.log(req.body);
+                }
+            });
+            imdbAlt.findTheCredits(movieFromTmdb[0].id, function (err, cast, director, screenPlay, story, musicComposer, producers, execProducers){
+                if(err) {
+                    console.log("L'errore trovato è: " + err);
+                } else {
+                    req.body.cast = cast;
+                    req.body.director = director;
+                    req.body.screenPlay = screenPlay;
+                    req.body.story = story;
+                    req.body.musicComposer = musicComposer;
+                    req.body.producers = producers;
+                    req.body.execProducers = execProducers;
+                    //console.log(req.body);
+                    //Lastly, insert all the body into db
+                    moviesDb.insert(req.body, function(err, response, header) {
+                        if(err) { 
+                            res.writeHead(500, { "Content-Type": "text/plain" }); 
+                            res.end("Inserting book failed. " + err + "\n"); 
+                        } else { 
+                            res.writeHead(200, { "Content-Type": "text/plain" }); 
+                            res.end(JSON.stringify(response)); 
+                        } 
+                    });
                 }
             });
         }
     });
-
-
-/*     if(movieFromTmdb != undefined) {
-    } else {
-        console.log("Oggetto Vuoto");
-    } */
-    //var credits = imdbAlt.findTheCredits(movieFromTmdb.results.id);
-    //console.log("I credits sono: " + credits);
-
-    /*moviesDb.insert(req.body, function(err, response, header) {
-        if(err) { 
-            res.writeHead(500, { "Content-Type": "text/plain" }); 
-            res.end("Inserting book failed. " + err + "\n"); 
-        } else { 
-            res.writeHead(200, { "Content-Type": "text/plain" }); 
-            res.end(JSON.stringify(response)); 
-        } 
-    });*/
 });
 
 app.listen(3000, function() {

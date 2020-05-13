@@ -41,14 +41,16 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let movie of movies">
-                                <td>{{ movie.movieTitle }}</td>
-                                <td>{{ movie.movieGenre }}</td>
+                                <td [class.selected]="movie === selectedMovie"
+                                (click)="onSelect(movie)">{{ movie.movieTitle }}</td>
+                                <td>{{ movie.movieGenre.join(', ') }}</td>
                                 <td>{{ movie.formats.bluRay }}</td>
                                 <td>{{ movie.formats.digital }}</td>
                                 <td>{{ movie.formats.dvd }}</td>
                             </tr>
                         </tbody>
                     </table>
+                    <app-movie-details [movie]="selectedMovie"></app-movie-details>
                 </div>
             </div>
         </div>

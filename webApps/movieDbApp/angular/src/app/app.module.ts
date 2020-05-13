@@ -8,9 +8,11 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CreateComponent } from './create/create.component';
 import { MoviesComponent } from './movies/movies.component';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
 
 let routes: any = [
   { path: "", component: MoviesComponent },
+  { path: "movie-details", component: MovieDetailsComponent },
   { path: "create", component: CreateComponent }
 ];
 
@@ -18,7 +20,8 @@ let routes: any = [
   declarations: [
     AppComponent,
     CreateComponent,
-    MoviesComponent
+    MoviesComponent,
+    MovieDetailsComponent
   ],
   imports: [
     BrowserModule,
