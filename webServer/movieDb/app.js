@@ -35,7 +35,7 @@ app.get("/movies", function(req, res) {
                 }
             });
             newJson = newJson + "]";
-            //console.log(newJson);
+            console.log(newJson);
             res.end(newJson); 
         } 
     });
