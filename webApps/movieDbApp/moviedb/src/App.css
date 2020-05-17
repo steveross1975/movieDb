@@ -1,0 +1,9 @@
+.image {
+    height: auto;
+    max-height: 250px;
+    width: auto;
+    max-width: 250px;
+  }
+  .littleFont {
+      font-size: 8px !important
+  }

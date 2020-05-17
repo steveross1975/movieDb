@@ -16,14 +16,10 @@ exports.findTheMovie = function(movieTitle, callback) {
     req.query({
         "api_key": tmdbKey,
         "query": movieTitlePlus,
-        "language": "it"
+        "language": "en-US"
     });
     req.end(function (res) {
         if (res.error) throw new Error(res.error);
-/*         if (res.error) {
-            console.log("Errore: " + JSON.stringify(res.error));
-        }; */
-        //console.log("Body Movie Cavolo!!!: " + JSON.stringify(res.body));
         callback(res.error, res.body);
     });
 }

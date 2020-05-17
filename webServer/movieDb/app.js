@@ -59,6 +59,7 @@ app.get("/movies/:title", function(req, res) {
 });
 
 app.post("/movies", function(req, res) {
+    console.log(req.body);
     if(!req.body.movieTitle) {
         return res.status(400).send({ "message": "Missing `name` property" });
     }
@@ -70,10 +71,11 @@ app.post("/movies", function(req, res) {
         } else {
             movieFromTmdb = resp.results;
             req.body.idFromTmdb = movieFromTmdb[0].id;
-            req.body.movieTitle = movieFromTmdb[0].title; 
             req.body.originalTitle = movieFromTmdb[0].original_title;
             req.body.overview = movieFromTmdb[0].overview;
             req.body.url2poster = "https://image.tmdb.org/t/p/w500" + movieFromTmdb[0].poster_path;
+            req.body.releaseDate = movieFromTmdb[0].release_date;
+            console.log(req.body);
             //req.body.genres = genres;
             imdbAlt.findTheGenres(movieFromTmdb[0].genre_ids, function(err, resp) {
                 if(err) {
