@@ -3,7 +3,8 @@ import Nav from './Nav';
 import SearchArea from './searchArea';
 import MovieList from './movieList';
 import AddAMovie from './addAMovie';
-import Pagination from './pagination'
+import Pagination from './pagination';
+import Movie from './movie'
 
 class App extends Component {
   constructor() {
@@ -17,7 +18,8 @@ class App extends Component {
       filter: false,
       listAfterInsert: false,
       totalResults: 0,
-      currentPage: 1
+      currentPage: 1,
+      currentMovie: null
     }
   }
   callbackFromList = (childDataData, childDataMovies, totalMovies) => {
@@ -34,8 +36,8 @@ class App extends Component {
 
   nextPage = (pageNumber) => {
     console.log(pageNumber)
-    this.setState({pageToGo: pageNumber})
     this.movieListRef.current.getMoviesData(pageNumber);
+    this.state.currentPage = pageNumber;
   }
 
   //componentDidMount è il metodo che popola l'array data appena viene caricata la schermata 
@@ -77,30 +79,30 @@ class App extends Component {
     //filter
   }
 
+  viewMovieInfo = (id) => {
+    const chosenMovie = this.state.moviesToFilter.filter(movie => movie.idFromTmdb === id)
+    console.log(chosenMovie)
+    const newCurrentMovie = chosenMovie.length > 0 ? chosenMovie[0] : null
+    this.setState({ currentMovie: chosenMovie })
+  }
+  nullMovie = () => {
+    this.setState({ currentMovie: null })
+  }
   handleInsert = () => {
     this.setState({listAfterInsert: true}) 
   }
   render() {
     if(this.state.filter === false && this.state.listAfterInsert === false ) {
-      const numberOfPages = (this.state.totalResults % 2) === 0 ? this.state.totalResults / 2 : Math.floor(this.state.totalResults / 2) + 1;
+      console.log("Total: " + this.state.totalResults)
+      const numberOfPages = (this.state.totalResults % 20) === 0 ? this.state.totalResults / 20 : Math.floor(this.state.totalResults / 20) + 1;
       console.log("Number: " + numberOfPages)
       return (
         <div className="App">
           <Nav />
-          <div className="container">
-            <div className="row">
-              <div className="col s6 m3 l3">
-                  <SearchArea handleChange={this.handleChange}></SearchArea>
-              </div>
-              <div className="col m1 l1"></div>
-              <div className="col m4 l4"></div>
-              <div className="col s6 m4 l4">
-                <AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie>
-              </div>
-            </div>
-          </div>
-          <MovieList movieCallback={this.callbackFromList} ref={this.movieListRef}></MovieList>
-          { this.state.totalResults > 2 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
+          {
+            this.state.currentMovie === null ? <div><div className="container"><div className="row"><div className="col s6 m3 l3"><SearchArea handleChange={this.handleChange}></SearchArea></div><div className="col m1 l1"></div><div className="col m4 l4"></div><div className="col s6 m4 l4"><AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie></div></div></div><MovieList viewMovieInfo={this.viewMovieInfo} movieCallback={this.callbackFromList} ref={this.movieListRef}></MovieList></div> : <Movie currentMovie={this.state.currentMovie} nullMovie={this.nullMovie}/>
+          }
+          { this.state.totalResults > 20 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
         </div>
       );
     } else if (this.state.filter === true && this.state.listAfterInsert === false) {
@@ -129,7 +131,7 @@ class App extends Component {
         </div>
       );
     } else {
-      const numberOfPages = (this.state.totalResults % 2) === 0 ? this.state.totalResults / 2 : Math.floor(this.state.totalResults / 2) + 1;
+      const numberOfPages = (this.state.totalResults % 20) === 0 ? this.state.totalResults / 20 : Math.floor(this.state.totalResults / 20) + 1;
       return (
         <div className="App">
           <Nav />
@@ -149,7 +151,7 @@ class App extends Component {
             <div className="row">
               <div className="col s10 offset-s1">
                 {this.state.moviesToShowInsert}
-                { this.state.totalResults > 2 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
+                { this.state.totalResults > 20 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
               </div>
             </div>
           </div>

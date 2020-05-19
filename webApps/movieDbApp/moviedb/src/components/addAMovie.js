@@ -35,7 +35,7 @@ export default class MovieList extends Component {
                         }
                         <td id="idTmdb">{movie.idFromTmdb}<input type="hidden" value={movie.movieTitleLower}/></td>
                     </tr> */
-                    <div className="col s12 m3 l3">
+                    <div className="col s12 m3 l3" key={i} movieid ={movie.idFromTmdb}>
                         <div className="card">
                             <div className="card-image waves-effect waves-block waves-light">
                                 <img key={i} src={movie.url2poster} alt={movie.movieTitle} className="responsive-img" />
@@ -47,7 +47,8 @@ export default class MovieList extends Component {
                         </div>
                     </div>
                 )
-                this.setState({movies})
+                console.log(movies)
+                this.setState(() => ({movies: movies}))
                 this.setState({data})
                 this.setState({numberOfMovies})
                 this.sendMovies()

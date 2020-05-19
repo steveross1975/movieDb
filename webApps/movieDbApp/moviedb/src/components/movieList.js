@@ -17,18 +17,16 @@ export default class MovieList extends Component {
                 const numberOfMovies = data.length;
                 const movies = data.map((movie, i) =>
                 {
-                    if(page === (Math.floor(i / 2) + 1)) {
-                        console.log("page = " + page)
-                        console.log("Math = " + (Math.floor(i / 2) + 1))
+                    if(page === (Math.floor(i / 20) + 1)) {
                         return(
-                            <div className="col s12 m3 l3" key={i} page={ page }>
+                            <div className="col s12 m3 l3" key={i} page={ page } movieid ={movie.idFromTmdb}>
                                 <div className="card">
                                     <div className="card-image waves-effect waves-block waves-light">
                                         <img src={movie.url2poster} alt={movie.movieTitle} className="responsive-img" />
                                         <p className="littleFont" align="center"><span><b>{movie.movieTitle}</b></span></p>
                                     </div>
                                     <div className="card-action">
-                                        <a href="#">Movie Details</a>
+                                        <a href="#" onClick={() => this.props.viewMovieInfo(movie.idFromTmdb)}>Movie Details</a>
                                     </div>
                                 </div>
                             </div>
