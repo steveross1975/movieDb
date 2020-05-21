@@ -23,7 +23,7 @@ MovieDB is a Web Single Page Application that helps people store their movies.
   - Executive Producers
   
   #### 3.2. Insert in DB
-    via POST API the JSON to the DB in a table called movies  
+    A POST API pushes the JSON to the DB in a table called movies  
 ## Technologies
 
 ### Backend
