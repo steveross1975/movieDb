@@ -33,19 +33,6 @@ export default class MovieList extends Component {
                             )
                     }
                 }
-/*                     <tr>
-                        <td id="posterImage"><img src={movie.url2poster} alt={movie.movieTitle} height="10%" width="10%"/></td>
-                        <td id="movieTitle">{movie.movieTitle}</td>
-                        <td id="movieGenre">{movie.movieGenre.join(', ')}</td>
-                        {//For Nested Array
-                            movie.director.map(value => {
-                                return(
-                                    <td id="directors" key={value.name}>{value.name}</td>
-                                );
-                            })
-                        }
-                        <td id="idTmdb">{movie.idFromTmdb}<input type="hidden" value={movie.movieTitleLower}/></td>
-                    </tr> */
                 )
                 this.setState({movies})
                 this.setState({data})
@@ -63,28 +50,7 @@ export default class MovieList extends Component {
         this.props.movieCallback(this.state.data, this.state.movies, this.state.numberOfMovies);
     }
     render() {
-/*         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col s10 offset-s1">
-                        <table className="highlight responsive-table">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Title</th>
-                                    <th>Genre</th>
-                                    <th>Director</th>
-                                    <th>idFromTmdb</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.movies}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        )   */ 
+
         return (
             <div className="container">
                 <div className="row">

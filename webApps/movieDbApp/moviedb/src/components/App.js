@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Nav from './Nav';
 import SearchArea from './searchArea';
 import MovieList from './movieList';
+import MovieListFiltered from './movieListFiltered';
+import MovieListInserted from './movieListInserted';
 import AddAMovie from './addAMovie';
 import Pagination from './pagination';
 import Movie from './movie'
@@ -22,7 +24,7 @@ class App extends Component {
       currentMovie: null
     }
   }
-  callbackFromList = (childDataData, childDataMovies, totalMovies) => {
+  callbackFromList = (childDataData, childDataMovies) => {
     this.setState({moviesToFilter: childDataData});
     this.setState({moviesToShow: childDataMovies});
     this.setState({totalResults: childDataData.length});
@@ -42,41 +44,24 @@ class App extends Component {
 
   //componentDidMount è il metodo che popola l'array data appena viene caricata la schermata 
   handleChange = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     console.log(e.target.value)
     if(e.target.value === "") {
       this.setState({filter: false})
-
     }
-    const moviesFiltered = this.state.moviesToFilter.filter(movie => {return(movie.movieTitleLower.includes(e.target.value.toLowerCase()))}).map((movie, i) =>
-/*       <tr>
-          <td><img src={movie.url2poster} alt={movie.movieTitle} height="10%" width="10%"/></td>
-          <td>{movie.movieTitle}</td>
-          <td>{movie.movieGenre.join(', ')}</td>
-          {//For Nested Array
-              movie.director.map(value => {
-                  return(
-                      <td key={value.name}>{value.name}</td>
-                  );
-              })
-          }
-          <td>{movie.idFromTmdb}</td>
-      </tr> */
-        <div className="col s12 m3 l3" key={i}>
-          <div className="card">
-            <div className="card-image waves-effect waves-block waves-light">
-                <img src={movie.url2poster} alt={movie.movieTitle} className="responsive-img" />
-                <p className="littleFont" align="center"><span><b>{movie.movieTitle}</b></span></p>
-            </div>
-            <div className="card-action">
-                <a href="#">Movie Details</a>
-            </div>
-          </div>
-        </div>
-    )
-    this.setState({moviesFiltered})
-    this.setState({filter: true})
+    const moviesToBeFiltered = this.state.moviesToFilter
+    const moviesFiltered = moviesToBeFiltered.filter(movie => {
+      console.log(movie.movieTitleLower + " include " + e.target.value + "? " + movie.movieTitleLower.includes(e.target.value.toLowerCase()))
+      return (
+        movie.movieTitleLower.includes(e.target.value.toLowerCase())
+      )
+    })
+    console.log(moviesFiltered)
+    this.setState({moviesFiltered: moviesFiltered})
+    
     //filter
+
+    this.setState({filter: true})
   }
 
   viewMovieInfo = (id) => {
@@ -100,34 +85,18 @@ class App extends Component {
         <div className="App">
           <Nav />
           {
-            this.state.currentMovie === null ? <div><div className="container"><div className="row"><div className="col s6 m3 l3"><SearchArea handleChange={this.handleChange}></SearchArea></div><div className="col m1 l1"></div><div className="col m4 l4"></div><div className="col s6 m4 l4"><AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie></div></div></div><MovieList viewMovieInfo={this.viewMovieInfo} movieCallback={this.callbackFromList} ref={this.movieListRef}></MovieList></div> : <Movie currentMovie={this.state.currentMovie} nullMovie={this.nullMovie}/>
+            this.state.currentMovie === null ? <div><div className="container"><div className="row"><div className="col s6 m3 l3"><SearchArea id="search" handleChange={this.handleChange}></SearchArea></div><div className="col m1 l1"></div><div className="col m4 l4"></div><div className="col s6 m4 l4"><AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie></div></div></div><MovieList viewMovieInfo={this.viewMovieInfo} movieCallback={this.callbackFromList} ref={this.movieListRef}></MovieList></div> : <Movie currentMovie={this.state.currentMovie} nullMovie={this.nullMovie}/>
           }
           { this.state.totalResults > 20 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
         </div>
       );
     } else if (this.state.filter === true && this.state.listAfterInsert === false) {
-      return (
+      return(
         <div className="App">
           <Nav />
-          <div className="container">
-            <div className="row">
-              <div className="col s3">
-                  <SearchArea handleChange={this.handleChange}></SearchArea>
-              </div>
-              <div className="col s1"></div>
-              <div className="col s4"></div>
-              <div className="col s4">
-                <AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie>
-              </div>
-            </div>
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col s10 offset-s1">
-                {this.state.moviesFiltered}
-              </div>
-            </div>
-          </div>
+        {
+          this.state.currentMovie === null ? <div><div className="container"><div className="row"><div className="col s6 m3 l3"><SearchArea id="search" handleChange={this.handleChange}></SearchArea></div><div className="col m1 l1"></div><div className="col m4 l4"></div><div className="col s6 m4 l4"><AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie></div></div></div><div className="container"><div className="row"><div className="col s10 offset-s1"><MovieListFiltered viewMovieInfo={this.viewMovieInfo} movieCallback={() => this.callbackFromList} ref={this.movieListRef} moviesAfterFilter={this.state.moviesFiltered}></MovieListFiltered></div></div></div></div> : <Movie currentMovie={this.state.currentMovie} nullMovie={this.nullMovie}/>
+        }
         </div>
       );
     } else {
@@ -135,10 +104,14 @@ class App extends Component {
       return (
         <div className="App">
           <Nav />
-          <div className="container">
+          {
+            this.state.currentMovie === null ? <div><div className="container"><div className="row"><div className="col s6 m3 l3"><SearchArea id="search" handleChange={this.handleChange}></SearchArea></div><div className="col m1 l1"></div><div className="col m4 l4"></div><div className="col s6 m4 l4"><AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie></div></div></div><div className="container"><div className="row"><div className="col s10 offset-s1"><MovieListInserted viewMovieInfo={this.viewMovieInfo} ref={this.movieListRef} moviesAfterInsert={this.state.moviesToShowInsert} pages={this.state.totalResults} currentPage={this.state.currentPage}></MovieListInserted></div></div></div></div> : <Movie currentMovie={this.state.currentMovie} nullMovie={this.nullMovie}/>
+          }
+          { this.state.totalResults > 20 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
+{/*           <div className="container">
             <div className="row">
               <div className="col s3">
-                  <SearchArea handleChange={this.handleChange}></SearchArea>
+                  <SearchArea id="search" handleChange={this.handleChange}></SearchArea>
               </div>
               <div className="col m1"></div>
               <div className="col m4"></div>
@@ -155,7 +128,7 @@ class App extends Component {
               </div>
             </div>
           </div>
-        </div>
+ */}        </div>
       );
     }
   }

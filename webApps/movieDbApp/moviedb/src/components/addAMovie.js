@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../axios'
  
-export default class MovieList extends Component {
+export default class AddAMovie extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,19 +22,6 @@ export default class MovieList extends Component {
                 console.log(data);
                 const numberOfMovies = data.length;
                 const movies = data.map((movie, i)=>
-/*                     <tr>
-                        <td id="posterImage"><img src={movie.url2poster} alt={movie.movieTitle} height="10%" width="10%"/></td>
-                        <td id="movieTitle">{movie.movieTitle}</td>
-                        <td id="movieGenre">{movie.movieGenre.join(', ')}</td>
-                        {//For Nested Array
-                            movie.director.map(value => {
-                                return(
-                                    <td id="directors" key={value.name}>{value.name}</td>
-                                );
-                            })
-                        }
-                        <td id="idTmdb">{movie.idFromTmdb}<input type="hidden" value={movie.movieTitleLower}/></td>
-                    </tr> */
                     <div className="col s12 m3 l3" key={i} movieid ={movie.idFromTmdb}>
                         <div className="card">
                             <div className="card-image waves-effect waves-block waves-light">
