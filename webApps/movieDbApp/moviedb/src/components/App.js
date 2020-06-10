@@ -108,27 +108,7 @@ class App extends Component {
             this.state.currentMovie === null ? <div><div className="container"><div className="row"><div className="col s6 m3 l3"><SearchArea id="search" handleChange={this.handleChange}></SearchArea></div><div className="col m1 l1"></div><div className="col m4 l4"></div><div className="col s6 m4 l4"><AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie></div></div></div><div className="container"><div className="row"><div className="col s10 offset-s1"><MovieListInserted viewMovieInfo={this.viewMovieInfo} ref={this.movieListRef} moviesAfterInsert={this.state.moviesToShowInsert} pages={this.state.totalResults} currentPage={this.state.currentPage}></MovieListInserted></div></div></div></div> : <Movie currentMovie={this.state.currentMovie} nullMovie={this.nullMovie}/>
           }
           { this.state.totalResults > 20 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
-{/*           <div className="container">
-            <div className="row">
-              <div className="col s3">
-                  <SearchArea id="search" handleChange={this.handleChange}></SearchArea>
-              </div>
-              <div className="col m1"></div>
-              <div className="col m4"></div>
-              <div className="col s4">
-                <AddAMovie handleInsert={this.handleInsert} insertCallback={this.callbackFromInsert}></AddAMovie>
-              </div>
-            </div>
-          </div>
-          <div className="container">
-            <div className="row">
-              <div className="col s10 offset-s1">
-                {this.state.moviesToShowInsert}
-                { this.state.totalResults > 20 ? <Pagination pages={ numberOfPages } nextPage= {this.nextPage} currentPage={this.state.currentPage} /> : '' }
-              </div>
-            </div>
-          </div>
- */}        </div>
+        </div>
       );
     }
   }
